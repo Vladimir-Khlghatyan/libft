@@ -42,7 +42,7 @@ static int	wordcount(const char *s, char c)
 		i++;
 	while (s[i])
 	{
-		if (s[i] != c && s[i - 1] == c)
+		if (s[i] != c && i > 0 && s[i - 1] == c)
 			q++;
 		i++;
 	}
