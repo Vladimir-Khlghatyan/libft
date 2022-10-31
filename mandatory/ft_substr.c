@@ -31,12 +31,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		substr = malloc(sizeof(*s) * (s_len - start + 1));
 	if (!substr)
 		return (NULL);
-	i = 0;
-	while (i < len && s[start + i])
-	{
+	i = -1;
+	while (++i < len && s[start + i])
 		substr[i] = s[start + i];
-		i++;
-	}
 	substr[i] = '\0';
 	return (substr);
 }
