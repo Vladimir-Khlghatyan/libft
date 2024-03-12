@@ -12,41 +12,38 @@
 
 #include "libft.h"
 
-static char	**tabfree(char **tab)
+static char	**arrfree(char **arr)
 {
 	int	i;
 
-	if (!tab)
+	if (!arr)
 		return (NULL);
 	i = -1;
-	while (tab[++i])
+	while (arr[++i])
 	{
-		free(tab[i]);
-		tab[i] = NULL;
+		free(arr[i]);
+		arr[i] = NULL;
 	}
-	free(tab);
-	tab = NULL;
+	free(arr);
+	arr = NULL;
 	return (NULL);
 }
 
 static int	wordcount(const char *s, char c)
 {
-	int	q;
-	int	i;
+	int		count;
+	int		i;
 
-	q = 1;
-	if (!s[0] || s[0] == c)
-		q = 0;
+	if (!s || !s[0])
+		return (0);
+	count = 0;
 	i = 0;
-	while (s[i] != '\0' && s[i] == c)
-		i++;
-	while (s[i])
-	{
-		if (s[i] != c && i > 0 && s[i - 1] == c)
-			q++;
-		i++;
-	}
-	return (q);
+	while (s[++i])
+		if (s[i] == c && s[i - 1] != c)
+			++count;
+	if (s[i - 1] != c)
+		++count;
+	return (count);
 }
 
 static int	wordlen(const char *s, char c)
@@ -70,7 +67,7 @@ static int	wordlen(const char *s, char c)
 
 char	**ft_split(char const *s, char c)
 {
-	char	**tab;
+	char	**arr;
 	int		wc;
 	int		i[2];
 
@@ -78,21 +75,21 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	i[0] = -1;
 	wc = wordcount(s, c);
-	tab = (char **)malloc(sizeof(char *) * (wc + 1));
-	if (!tab)
+	arr = (char **)malloc(sizeof(char *) * (wc + 1));
+	if (!arr)
 		return (NULL);
 	while (++i[0] < wc)
 	{
-		tab[i[0]] = (char *)malloc(sizeof(char) * (wordlen(s, c) + 1));
-		if (!tab[i[0]])
-			return (tabfree(tab));
+		arr[i[0]] = (char *)malloc(sizeof(char) * (wordlen(s, c) + 1));
+		if (!arr[i[0]])
+			return (arrfree(arr));
 		while (*s == c)
 			s++;
 		i[1] = 0;
 		while (*s != c && *s)
-			tab[i[0]][i[1]++] = *s++;
-		tab[i[0]][i[1]] = '\0';
+			arr[i[0]][i[1]++] = *s++;
+		arr[i[0]][i[1]] = '\0';
 	}
-	tab[i[0]] = NULL;
-	return (tab);
+	arr[i[0]] = NULL;
+	return (arr);
 }
